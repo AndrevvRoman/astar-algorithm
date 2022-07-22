@@ -44,8 +44,8 @@ public:
             map.setCell(nodeStart.x, nodeStart.y, ArrayMap::CellType::START_POS);
             map.setCell(nodeGoal.x, nodeGoal.y, ArrayMap::CellType::GOAL_POS);
 
-            auto solution = astarsearch.linearizeSolution();
-            for (const auto node : solution)
+            auto solutionNodes = astarsearch.linearizeSolution();
+            for (const auto node : solutionNodes)
             {
                 if (!node.isSameState(nodeGoal) && !node.isSameState(nodeStart))
                 {
@@ -53,13 +53,13 @@ public:
                 }
             }
 
-            std::cout << "Solution steps count " << solution.size() << std::endl;
+            std::cout << "Solution steps count " << solutionNodes.size() << std::endl;
             // Display the number of loops the search went through
             std::cout << "Search Steps count " << astarsearch.getStepCount() << std::endl;
             std::cout << std::endl;
             consoleFrontend.draw(map);
             // prettyFrontend.instantDraw(map);
-            return prettyFrontend.stepByStepDraw(map, solution, visitedNodes);
+            return prettyFrontend.stepByStepDraw(map, solutionNodes, visitedNodes);
         }
         return false;
     }
