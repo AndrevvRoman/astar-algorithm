@@ -1,4 +1,4 @@
-#include "src/MapSearchImpl.hpp"
+#include "src/MapSearcher.hpp"
 
 #include <iostream>
 #include <stdio.h>
