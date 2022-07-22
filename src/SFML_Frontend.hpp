@@ -38,7 +38,7 @@ public:
         {
             for (size_t j = 0; j < map.MAP_WIDTH; ++j)
             {
-                auto currentCell = static_cast<ArrayMap::CellType>(map.frontend[i][j]);
+                auto currentCell = static_cast<ArrayMap::CellType>(map.view[i][j]);
                 if (currentCell != ArrayMap::CellType::EMPTY_POS)
                 {
                     RectangleShape rect(Vector2f(rectWidth, rectHeight));
@@ -115,7 +115,7 @@ public:
         {
             for (size_t j = 0; j < map.MAP_WIDTH; ++j)
             {
-                auto currentCell = static_cast<ArrayMap::CellType>(map.frontend[i][j]);
+                auto currentCell = static_cast<ArrayMap::CellType>(map.view[i][j]);
                 if (currentCell == ArrayMap::CellType::WALL_POS or
                     currentCell == ArrayMap::CellType::START_POS or
                     currentCell == ArrayMap::CellType::GOAL_POS)

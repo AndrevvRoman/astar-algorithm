@@ -14,7 +14,7 @@ public:
             std::cout << "|";
             for (size_t j = 0; j < map.MAP_WIDTH; ++j)
             {
-                auto currentCell = static_cast<ArrayMap::CellType>(map.frontend[i][j]);
+                auto currentCell = static_cast<ArrayMap::CellType>(map.view[i][j]);
                 switch (currentCell)
                 {
                 case ArrayMap::CellType::WALL_POS:

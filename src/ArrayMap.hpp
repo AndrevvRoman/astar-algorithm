@@ -34,7 +34,7 @@ public:
 
     // Copy of logical map that used for marking down path, visited nodes and all stuff
     // that not involved in process of search, but can be displayed to user in some form
-    int frontend[MAP_HEIGHT][MAP_WIDTH] =
+    int view[MAP_HEIGHT][MAP_WIDTH] =
         {
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
             {1, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 1},
@@ -81,7 +81,7 @@ public:
 
     void setCell(const int x, const int y, CellType mark)
     {
-        frontend[y][x] = static_cast<int>(mark);
+        view[y][x] = static_cast<int>(mark);
     }
 
     // Singletone used as MapSearchNode depends oh this object
