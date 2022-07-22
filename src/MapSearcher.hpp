@@ -7,7 +7,6 @@
 #include "ConsoleFrontend.hpp"
 #include "MapSearchNode.hpp"
 
-
 /**
  * @brief Class that generates two random points on grid and starts A* search
  */
@@ -16,7 +15,7 @@ class MapSearcher
 public:
     bool run()
     {
-        ArrayMap map = ArrayMap::getInstance();
+        ArrayMap &map = ArrayMap::getInstance();
         ConsoleFrontend consoleFrontend;
         SFML_Frontend prettyFrontend;
 
@@ -64,16 +63,22 @@ public:
         return false;
     }
 
+    ~MapSearcher()
+    {
+        // Clean all changes in map after search
+        ArrayMap::getInstance().reset();
+    }
+
 private:
     MapSearchNode _generateRandomPoint() const
     {
-        ArrayMap map = ArrayMap::getInstance();
+        ArrayMap &map = ArrayMap::getInstance();
         MapSearchNode point;
         do
         {
-            point.x = rand() % map.MAP_WIDTH;
-            point.y = rand() % map.MAP_HEIGHT;
-        } while (map.logical[point.y][point.x] == 9);
+            point.x = rand() % map.getWidth();
+            point.y = rand() % map.getHeight();
+        } while (map.getPoint(point.x, point.y) == ArrayMap::CellType::WALL_POS);
         return point;
     }
 };

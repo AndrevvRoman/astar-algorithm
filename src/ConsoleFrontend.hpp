@@ -7,14 +7,14 @@
 class ConsoleFrontend
 {
 public:
-    void draw(ArrayMap map) const
+    void draw(ArrayMap & map) const
     {
-        for (size_t i = 0; i < map.MAP_HEIGHT; ++i)
+        for (size_t i = 0; i < map.getHeight(); ++i)
         {
             std::cout << "|";
-            for (size_t j = 0; j < map.MAP_WIDTH; ++j)
+            for (size_t j = 0; j < map.getWidth(); ++j)
             {
-                auto currentCell = static_cast<ArrayMap::CellType>(map.view[i][j]);
+                auto currentCell = static_cast<ArrayMap::CellType>(map.getViewMap()[i][j]);
                 switch (currentCell)
                 {
                 case ArrayMap::CellType::WALL_POS:

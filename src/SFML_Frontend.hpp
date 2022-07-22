@@ -15,7 +15,7 @@ public:
     static constexpr int WINDOW_HEIGHT = 800;
     static constexpr int CELL_STEP = 5;
 
-    void instantDraw(const ArrayMap &map)
+    void instantDraw(ArrayMap &map)
     {
         using namespace sf;
 
@@ -29,16 +29,16 @@ public:
         }
 
         // Create the main window
-        const float rectWidth = WINDOW_WIDTH / map.MAP_WIDTH;
-        const float rectHeight = WINDOW_HEIGHT / map.MAP_HEIGHT;
+        const float rectWidth = WINDOW_WIDTH / map.getWidth();
+        const float rectHeight = WINDOW_HEIGHT / map.getHeight();
         RenderWindow window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "A* visualization");
         std::list<RectangleShape> rects;
 
-        for (size_t i = 0; i < map.MAP_HEIGHT; ++i)
+        for (size_t i = 0; i < map.getHeight(); ++i)
         {
-            for (size_t j = 0; j < map.MAP_WIDTH; ++j)
+            for (size_t j = 0; j < map.getWidth(); ++j)
             {
-                auto currentCell = static_cast<ArrayMap::CellType>(map.view[i][j]);
+                auto currentCell = static_cast<ArrayMap::CellType>(map.getViewMap()[i][j]);
                 if (currentCell != ArrayMap::CellType::EMPTY_POS)
                 {
                     RectangleShape rect(Vector2f(rectWidth, rectHeight));
@@ -90,7 +90,7 @@ public:
         }
     }
 
-    bool stepByStepDraw(const ArrayMap &map, std::deque<MapSearchNode> solution, std::deque<MapSearchNode> visited)
+    bool stepByStepDraw(ArrayMap &map, std::deque<MapSearchNode> solution, std::deque<MapSearchNode> visited)
     {
         using namespace sf;
 
@@ -104,18 +104,18 @@ public:
         }
 
         // Create the main window
-        const float rectWidth = WINDOW_WIDTH / map.MAP_WIDTH;
-        const float rectHeight = WINDOW_HEIGHT / map.MAP_HEIGHT;
+        const float rectWidth = WINDOW_WIDTH / map.getWidth();
+        const float rectHeight = WINDOW_HEIGHT / map.getHeight();
         RenderWindow window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "A* visualization");
         window.setFramerateLimit(60);
         std::list<RectangleShape> rects;
 
         // First drawing empty grid
-        for (size_t i = 0; i < map.MAP_HEIGHT; ++i)
+        for (size_t i = 0; i < map.getHeight(); ++i)
         {
-            for (size_t j = 0; j < map.MAP_WIDTH; ++j)
+            for (size_t j = 0; j < map.getWidth(); ++j)
             {
-                auto currentCell = static_cast<ArrayMap::CellType>(map.view[i][j]);
+                auto currentCell = static_cast<ArrayMap::CellType>(map.getViewMap()[i][j]);
                 if (currentCell == ArrayMap::CellType::WALL_POS or
                     currentCell == ArrayMap::CellType::START_POS or
                     currentCell == ArrayMap::CellType::GOAL_POS)

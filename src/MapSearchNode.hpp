@@ -57,7 +57,7 @@ public:
 
         // push each possible move except allowing the search to go backwards
 
-        auto map = ArrayMap::getInstance();
+        ArrayMap &map = ArrayMap::getInstance();
 
         if ((map.getPoint(x - 1, y) < ArrayMap::CellType::WALL_POS) && !((parent_x == x - 1) && (parent_y == y)))
         {
@@ -91,7 +91,7 @@ public:
      */
     float getCost(MapSearchNode &successor) const
     {
-        auto map = ArrayMap::getInstance();
+        ArrayMap &map = ArrayMap::getInstance();
         return (float)map.getPoint(x, y);
     }
 
