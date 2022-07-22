@@ -21,42 +21,6 @@ enum class SearchState
     OUT_OF_MEMORY
 };
 
-namespace detail
-{
-    /**
-     * @brief Example of user state class that can be passed to template parameter of the AStarSearch.
-     * Using of interface is avoided to preform compile time evaluation.
-     */
-    template <class T>
-    class _AbstractStarState
-    {
-    public:
-        virtual ~AStarState() {}
-        /**
-         * @brief Implementation of heuristic function which computes
-         * the estimated cost to the goal node
-         */
-        virtual float goalDistanceEstimate(T &nodeGoal) = 0;
-        /**
-         * @brief Returns true if this node is the goal node
-         */
-        virtual bool isGoal(T &nodeGoal) = 0;
-        /**
-         * @brief Retrieves all successors to this node and adds them via astarsearch.addSuccessor()
-         *
-         */
-        virtual bool getSuccessors(AStarSearch<T> *astarsearch, T *parent_node) = 0;
-        /**
-         * @brief Computes the cost of travelling from this node to the successor node
-         */
-        virtual float getCost(T &successor) = 0;
-        /**
-         * @brief Returns true if this node is the same as the rhs node
-         */
-        virtual bool isSameState(T &rhs) = 0;
-    };
-}
-
 // 
 /**
  * @brief The AStar search class. UserState is the users state space type
@@ -443,3 +407,39 @@ private:
     shared_ptr<Node> m_start;
     shared_ptr<Node> m_goal;
 };
+
+namespace detail
+{
+    /**
+     * @brief Example of user state class that can be passed to template parameter of the AStarSearch.
+     * Using of interface is avoided to preform compile time evaluation.
+     */
+    template <class T>
+    class _AbstractStarState
+    {
+    public:
+        virtual ~_AbstractStarState() {}
+        /**
+         * @brief Implementation of heuristic function which computes
+         * the estimated cost to the goal node
+         */
+        virtual float goalDistanceEstimate(T &nodeGoal) = 0;
+        /**
+         * @brief Returns true if this node is the goal node
+         */
+        virtual bool isGoal(T &nodeGoal) = 0;
+        /**
+         * @brief Retrieves all successors to this node and adds them via astarsearch.addSuccessor()
+         *
+         */
+        virtual bool getSuccessors(AStarSearch<T> *astarsearch, T *parent_node) = 0;
+        /**
+         * @brief Computes the cost of travelling from this node to the successor node
+         */
+        virtual float getCost(T &successor) = 0;
+        /**
+         * @brief Returns true if this node is the same as the rhs node
+         */
+        virtual bool isSameState(T &rhs) = 0;
+    };
+}
