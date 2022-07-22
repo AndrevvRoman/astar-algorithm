@@ -3,7 +3,7 @@
 
 #include "AStarSearch.hpp"
 #include "ArrayMap.hpp"
-#include "PrettyFrontend.hpp"
+#include "SFML_Frontend.hpp"
 #include "ConsoleFrontend.hpp"
 #include "MapSearchNode.hpp"
 
@@ -18,7 +18,7 @@ public:
     {
         ArrayMap map = ArrayMap::getInstance();
         ConsoleFrontend consoleFrontend;
-        PrettyFrontend prettyFrontend;
+        SFML_Frontend prettyFrontend;
 
         // Define a start state
         MapSearchNode nodeStart = _generateRandomPoint();

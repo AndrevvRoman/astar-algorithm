@@ -1,14 +1,14 @@
 #pragma once
-#include <SFML/Graphics.hpp>
-
 #include <list>
 #include <deque>
 #include <thread>
 
+#include <SFML/Graphics.hpp>
+
 #include "ArrayMap.hpp"
 #include "MapSearchNode.hpp"
 
-class PrettyFrontend
+class SFML_Frontend
 {
 public:
     static constexpr int WINDOW_WIDTH = 800;
@@ -171,6 +171,7 @@ public:
                 rects.push_back(rect);
                 visitedNodeIndex++;
             }
+            // We dont want to fill the goal cell so we just skip the last node of the solution
             else if (solutionNodeIndex < solution.size() - 1)
             {
                 RectangleShape rect(Vector2f(rectWidth, rectHeight));
@@ -186,6 +187,11 @@ public:
                 stopLoop = true;
             }
 
+            // FIXME
+            // In good solution we should't send to sleep the main thread to get step-by-step drawing.
+            // I should implement sfml rendering in separate thread and use thread-safe queue (e.g. with mutex) or some kind
+            // of observer pattern to notify sfml thread that we have to render something new on window
+            // but it would be too much work for the job test case.
             std::this_thread::sleep_for(std::chrono::milliseconds(80));
 
             window.clear();
@@ -201,8 +207,7 @@ public:
     }
 
 private:
-    void
-    _initializeText()
+    void _initializeText()
     {
         m_startText.setString("Start");
         m_goalText.setString("Goal");
@@ -216,6 +221,7 @@ private:
         m_startText.setFillColor(sf::Color::Black);
         m_goalText.setFillColor(sf::Color::Black);
     }
+
     sf::Text m_startText;
     sf::Text m_goalText;
     sf::Font m_font;
