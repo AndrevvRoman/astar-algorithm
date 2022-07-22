@@ -9,7 +9,11 @@ using namespace std;
 int main(int argc, char *argv[])
 {
     srand(time(0));
-    MapSearcher search;
-    search.run();
+    bool isShutDown = false;
+    while (!isShutDown)
+    {
+        MapSearcher search;
+        isShutDown = search.run();
+    }
     return 0;
 }

@@ -9,7 +9,7 @@ find_package(SFML COMPONENTS system window graphics)
 # target_compile_definitions(astar-algorithm PRIVATE SFML_STATIC)
 # set(SFML_STATIC_LIBRARIES TRUE)
 
-target_link_libraries(astar-algorithm sfml-graphics sfml-system sfml-window)
+target_link_libraries(astar-algorithm sfml-graphics sfml-system sfml-window pthread)
 
 file(COPY "fonts/roboto.ttf" DESTINATION ${CMAKE_BINARY_DIR} )
 

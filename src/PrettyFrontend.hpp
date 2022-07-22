@@ -2,8 +2,11 @@
 #include <SFML/Graphics.hpp>
 
 #include <list>
+#include <deque>
+#include <thread>
 
 #include "ArrayMap.hpp"
+#include "MapSearchNode.hpp"
 
 class PrettyFrontend
 {
@@ -12,7 +15,7 @@ public:
     static constexpr int WINDOW_HEIGHT = 800;
     static constexpr int CELL_STEP = 5;
 
-    void draw(const ArrayMap &map)
+    void instantDraw(const ArrayMap &map)
     {
         using namespace sf;
 
@@ -58,7 +61,7 @@ public:
                         rect.setFillColor(Color::Red);
                         break;
                     case ArrayMap::CellType::OPEN_PATH_POS:
-                        rect.setFillColor(Color(144,144,144));
+                        rect.setFillColor(Color(144, 144, 144));
                         break;
                     default:
                         break;
@@ -87,8 +90,119 @@ public:
         }
     }
 
+    bool stepByStepDraw(const ArrayMap &map, std::deque<MapSearchNode> solution, std::deque<MapSearchNode> visited)
+    {
+        using namespace sf;
+
+        if (!m_font.loadFromFile(m_fontName))
+        {
+            std::cout << "Text will be ignored. Try to run from the same directory as binary" << std::endl;
+        }
+        else
+        {
+            _initializeText();
+        }
+
+        // Create the main window
+        const float rectWidth = WINDOW_WIDTH / map.MAP_WIDTH;
+        const float rectHeight = WINDOW_HEIGHT / map.MAP_HEIGHT;
+        RenderWindow window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "A* visualization");
+        window.setFramerateLimit(60);
+        std::list<RectangleShape> rects;
+
+        // First drawing empty grid
+        for (size_t i = 0; i < map.MAP_HEIGHT; ++i)
+        {
+            for (size_t j = 0; j < map.MAP_WIDTH; ++j)
+            {
+                auto currentCell = static_cast<ArrayMap::CellType>(map.frontend[i][j]);
+                if (currentCell == ArrayMap::CellType::WALL_POS or
+                    currentCell == ArrayMap::CellType::START_POS or
+                    currentCell == ArrayMap::CellType::GOAL_POS)
+                {
+                    RectangleShape rect(Vector2f(rectWidth, rectHeight));
+                    Vector2f pos(CELL_STEP + (j * rectWidth), CELL_STEP + (i * rectHeight));
+                    rect.setPosition(pos);
+                    switch (currentCell)
+                    {
+                    case ArrayMap::CellType::WALL_POS:
+                        rect.setFillColor(Color::White);
+                        break;
+                    case ArrayMap::CellType::START_POS:
+                        m_startText.setPosition(pos);
+                        rect.setFillColor(Color::Green);
+                        break;
+                    case ArrayMap::CellType::GOAL_POS:
+                        m_goalText.setPosition(pos);
+                        rect.setFillColor(Color::Red);
+                        break;
+                    default:
+                        break;
+                    }
+                    rects.push_back(rect);
+                }
+            }
+        }
+
+        size_t visitedNodeIndex = 1;
+        size_t solutionNodeIndex = 1;
+
+        bool stopLoop = false;
+        bool isShutDown = false;
+
+        while (!stopLoop && window.isOpen())
+        {
+            Event event;
+            while (window.pollEvent(event))
+            {
+                if (event.type == Event::Closed)
+                {
+                    window.close();
+                    isShutDown = true;
+                }
+            }
+
+            if (visitedNodeIndex < visited.size())
+            {
+                RectangleShape rect(Vector2f(rectWidth, rectHeight));
+                Vector2f pos(CELL_STEP + (visited[visitedNodeIndex].x * rectWidth), CELL_STEP + (visited[visitedNodeIndex].y * rectHeight));
+                rect.setPosition(pos);
+                rect.setFillColor(Color(144, 144, 144));
+                rects.push_back(rect);
+                visitedNodeIndex++;
+            }
+            else if (solutionNodeIndex < solution.size() - 1)
+            {
+                RectangleShape rect(Vector2f(rectWidth, rectHeight));
+                Vector2f pos(CELL_STEP + (solution[solutionNodeIndex].x * rectWidth), CELL_STEP + (solution[solutionNodeIndex].y * rectHeight));
+                rect.setPosition(pos);
+                rect.setFillColor(Color::Yellow);
+                rects.push_back(rect);
+                solutionNodeIndex++;
+            }
+            else
+            {
+                std::this_thread::sleep_for(std::chrono::milliseconds(800));
+                stopLoop = true;
+            }
+
+            std::this_thread::sleep_for(std::chrono::milliseconds(80));
+
+            window.clear();
+            for (const auto r : rects)
+            {
+                window.draw(r);
+            }
+            window.draw(m_startText);
+            window.draw(m_goalText);
+            window.display();
+        }
+        return isShutDown;
+    }
+
 private:
-    void _initializeText()
+    void
+    _initializeText()
     {
         m_startText.setString("Start");
         m_goalText.setString("Goal");
