@@ -8,13 +8,18 @@
 class PrettyFrontend
 {
 public:
+    static constexpr int WINDOW_WIDTH = 800;
+    static constexpr int WINDOW_HEIGHT = 800;
+    static constexpr int CELL_STEP = 5;
     void draw(const ArrayMap &map)
     {
+        using namespace sf;
+
         // Create the main window
-        const float rectWidth = 800 / map.MAP_WIDTH;
-        const float rectHeight = 800 / map.MAP_HEIGHT;
-        sf::RenderWindow window(sf::VideoMode(800, 800), "A* visualisation");
-        std::list<sf::RectangleShape> rects;
+        const float rectWidth = WINDOW_WIDTH / map.MAP_WIDTH;
+        const float rectHeight = WINDOW_HEIGHT / map.MAP_HEIGHT;
+        RenderWindow window(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "A* visualization");
+        std::list<RectangleShape> rects;
 
         for (size_t i = 0; i < map.MAP_HEIGHT; ++i)
         {
@@ -23,27 +28,27 @@ public:
                 auto currentCell = static_cast<ArrayMap::CellType>(map.frontend[i][j]);
                 if (currentCell != ArrayMap::CellType::EMPTY_POS)
                 {
-                    sf::RectangleShape rect(sf::Vector2f(rectWidth, rectHeight));
-                    rect.setPosition(sf::Vector2f(5 + (j * rectWidth), 5 + (i * rectHeight)));
+                    RectangleShape rect(Vector2f(rectWidth, rectHeight));
+                    rect.setPosition(Vector2f(CELL_STEP + (j * rectWidth), CELL_STEP + (i * rectHeight)));
                     switch (currentCell)
                     {
                     case ArrayMap::CellType::WALL_POS:
-                        rect.setFillColor(sf::Color::White);
+                        rect.setFillColor(Color::White);
                         break;
                     case ArrayMap::CellType::PATH_POS:
-                        rect.setFillColor(sf::Color::Blue);
+                        rect.setFillColor(Color::Blue);
                         break;
                     case ArrayMap::CellType::START_POS:
-                        rect.setFillColor(sf::Color::Green);
+                        rect.setFillColor(Color::Green);
                         break;
                     case ArrayMap::CellType::GOAL_POS:
-                        rect.setFillColor(sf::Color::Red);
+                        rect.setFillColor(Color::Red);
                         break;
                     case ArrayMap::CellType::OPEN_PATH_POS:
-                        rect.setFillColor(sf::Color::Magenta);
+                        rect.setFillColor(Color::Magenta);
                         break;
                     case ArrayMap::CellType::CLOSE_PATH_POS:
-                        rect.setFillColor(sf::Color::Cyan);
+                        rect.setFillColor(Color::Cyan);
                         break;
                     default:
                         break;
@@ -55,10 +60,10 @@ public:
         // Start the game loop
         while (window.isOpen())
         {
-            sf::Event event;
+            Event event;
             while (window.pollEvent(event))
             {
-                if (event.type == sf::Event::Closed)
+                if (event.type == Event::Closed)
                     window.close();
             }
             window.clear();
