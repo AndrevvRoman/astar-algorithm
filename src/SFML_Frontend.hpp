@@ -225,5 +225,5 @@ private:
     sf::Text m_startText;
     sf::Text m_goalText;
     sf::Font m_font;
-    const std::string m_fontName = "./roboto.ttf";
+    const std::string m_fontName = "./fonts/roboto.ttf";
 };

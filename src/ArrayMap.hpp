@@ -75,7 +75,7 @@ public:
         {
             return CellType::WALL_POS;
         }
-
+        // Can be unsafe
         return static_cast<CellType>(logical[y][x]);
     }
 
@@ -96,8 +96,5 @@ public:
     }
 
 private:
-    ArrayMap()
-    {
-        std::cout << "Construct singletone !!!" << std::endl;
-    };
+    ArrayMap(){};
 };
