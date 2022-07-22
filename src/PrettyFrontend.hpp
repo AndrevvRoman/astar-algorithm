@@ -18,11 +18,12 @@ public:
 
         if (!m_font.loadFromFile(m_fontName))
         {
-            std::cout << "Failed to load font for pretty drawing" << std::endl;
-            return;
+            std::cout << "Text will be ignored. Try to run from the same directory as binary" << std::endl;
         }
-
-        _initializeText();
+        else
+        {
+            _initializeText();
+        }
 
         // Create the main window
         const float rectWidth = WINDOW_WIDTH / map.MAP_WIDTH;
@@ -104,5 +105,5 @@ private:
     sf::Text m_startText;
     sf::Text m_goalText;
     sf::Font m_font;
-    const std::string m_fontName = "roboto.ttf";
+    const std::string m_fontName = "./roboto.ttf";
 };
