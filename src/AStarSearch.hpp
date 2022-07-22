@@ -21,10 +21,9 @@ enum class SearchState
     OUT_OF_MEMORY
 };
 
-// 
 /**
  * @brief The AStar search class. UserState is the users state space type
- * 
+ *
  * @tparam UserState class that satisfies _AbstractUserState interface
  */
 template <class UserState>
@@ -71,7 +70,7 @@ public:
 
     /**
      * @brief Construct a new AStarSearch search
-     * 
+     *
      * @param start Start state of search
      * @param goal Goal state of search
      */
@@ -117,8 +116,8 @@ public:
     }
 
     /**
-     * @brief Function that allows user to add new successors of given node to continue search 
-     * 
+     * @brief Function that allows user to add new successors of given node to continue search
+     *
      * @return true If adding was successful
      * @return false If errors with allocation occurs
      */
@@ -154,7 +153,7 @@ public:
 
     /**
      * @brief Get final cost of solution
-     * 
+     *
      * @return Returns FLT_MAX if goal is not defined or there is no solution
      * and actual cost otherwise
      */
@@ -178,12 +177,20 @@ public:
     /**
      * @brief Get the visited nodes
      */
-    const deque<shared_ptr<Node>> &getVisitedNodes() const { return m_expandedNodes; }
+    deque<UserState> getVisitedNodes() const
+    {
+        deque<UserState> visited;
+        for (const auto node : m_expandedNodes)
+        {
+            visited.push_back(node->userState);
+        }
+        return visited;
+    }
 
 private:
     /**
      * @brief Function to preform one search step
-     * 
+     *
      * @return SearchState that indicates the current state of the search
      */
     SearchState _searchStep()
