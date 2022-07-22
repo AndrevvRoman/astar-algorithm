@@ -39,7 +39,7 @@ TEST_CASE("Simple search test for A* algorithm with existing solution")
         {2, 2},
         {3, 2},
         {3, 3}};
-    
+
     size_t expectedSolutionSize = expectedSolutionNodes.size();
     size_t expectedVisitedSize = expectedVisitedNodes.size();
 

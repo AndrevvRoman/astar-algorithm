@@ -7,7 +7,7 @@
 class ConsoleFrontend
 {
 public:
-    void draw(ArrayMap & map) const
+    void draw(ArrayMap &map) const
     {
         for (size_t i = 0; i < map.getHeight(); ++i)
         {
